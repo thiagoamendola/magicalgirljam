@@ -4,7 +4,10 @@
 
 label start:
 
-    jump intro
+    # jump intro
+
+    # $battle = "first"
+    jump play_turnbased
 
     return
  

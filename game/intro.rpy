@@ -90,6 +90,10 @@ label intro:
 
 label adventure_call:
 
+    mike "AUHSUHASHUHAUHSU"
+
+    # $battle = "first"
+    jump play_turnbased
 
     return
  

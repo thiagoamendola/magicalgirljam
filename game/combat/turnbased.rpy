@@ -1,31 +1,31 @@
 init python:
 
-    class TurnBasedDisplayable(renpy.Displayable):
+    # class TurnBasedDisplayable(renpy.Displayable):
 
-        def __init__(self):
+    #     def __init__(self):
 
-            renpy.Displayable.__init__(self)
+    #         renpy.Displayable.__init__(self)
 
 
-        # Recomputes the position of the ball, handles bounces, and
-        # draws the screen.
-        def render(self, width, height, st, at):
+    #     # Recomputes the position of the ball, handles bounces, and
+    #     # draws the screen.
+    #     def render(self, width, height, st, at):
 
-            # The Render object we'll be drawing into.
-            r = renpy.Render(width, height)
+    #         # The Render object we'll be drawing into.
+    #         r = renpy.Render(width, height)
 
-            # Ask that we be re-rendered ASAP, so we can show the next
-            # frame.
-            renpy.redraw(self, 0)
+    #         # Ask that we be re-rendered ASAP, so we can show the next
+    #         # frame.
+    #         renpy.redraw(self, 0)
 
-            # Return the Render object.
-            return r
+    #         # Return the Render object.
+    #         return r
         
 
-        # Handles events.
-        def event(self, ev, x, y, st):
+    #     # Handles events.
+    #     def event(self, ev, x, y, st):
 
-            import pygame
+    #         import pygame
     
     class Player:
 
@@ -60,20 +60,50 @@ init python:
 
 
 
-screen turnbased():
 
-    default turnbased = TurnBasedDisplayable()
+transform hpunch_sprite:
+    linear 0.090 xoffset -10 #-offset to keep Character in place
+    linear 0.090 xoffset +0 #+offset to move Character
+    repeat 4 #Repeats
 
-    #add "bg turnbased field"
-    add "bg lecturehall"
-
-    add turnbased
 
 
 label play_turnbased:
 
     window hide
 
-    call screen turnbased
+    #call screen turnbased
+
+#screen turnbased():
+
+    #add "bg turnbased field"
+
+    #default turnbased = TurnBasedDisplayable()
+
+    #add turnbased
+
+
+    scene bg lecturehall
+
+    show mahoumike stance at left
+
+    show m_first neutral at topright
+
+    jump tb_game_loop
 
     window show
+
+
+label tb_game_loop:
+
+    $ battle_end = False
+
+    while(not battle_end):
+
+        show mahoumike at hpunch_sprite
+
+        pause 1.0
+
+        show m_first at hpunch_sprite
+
+        pause 1.0
