@@ -52,11 +52,19 @@ init python:
     class Enemy:
 
         def __init__(self):
-            self.HP = 0
+            self.MAXHP = 9
+            self.HP = self.MAXHP
             self.DEFENSE = 0
             self.ATTACK = 0
             self.ACCURACY = 100
             self.AGILITY = 100
+
+
+    player = None
+    enemy = None
+
+    # def game_setup():
+
 
 
 
@@ -86,24 +94,43 @@ label play_turnbased:
     scene bg lecturehall
 
     show mahoumike stance at left
-
     show m_first neutral at topright
+    python:
+        # game_setup()
+        player = Player()
+        enemy = Enemy()
 
-    jump tb_game_loop
+    call .game_loop
 
-    window show
+    "FIN"
+
+    return
 
 
-label tb_game_loop:
+label .game_loop:
 
     $ battle_end = False
 
     while(not battle_end):
 
+        "Select action"
+
         show mahoumike at hpunch_sprite
+
+        python:
+            damage=player.ATTACK*3
+            enemy.HP-=damage
 
         pause 1.0
 
         show m_first at hpunch_sprite
 
         pause 1.0
+
+        "Mike caused [damage] damage"
+        "Monster now has [enemy.HP] life left"
+
+        python:
+            if enemy.HP<=0:
+                battle_end = True
+
