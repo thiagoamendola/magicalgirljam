@@ -36,6 +36,31 @@ init python:
             self.ACCURACY = 100
             self.AGILITY = 100
             self.MAGIC = 10
+
+            self.magic_list = []
+            self.magic_list.append(PlayerMagic(
+                "Fireball", 3, 3, {},
+                "Casts a fire ball that causes 3 damage"
+            ))
+            self.magic_list.append(PlayerMagic(
+                "Thunderstorm", 6, 2, {'hits':4, 'accuracy':0.5},
+                "Casts 4 thunders that causes 2 damage and have 50% of hitting the target"
+            ))
+            self.magic_list.append(PlayerMagic(
+                "Earthquake", 4, 3, {'effect_accuracy':0.5},
+                "Casts earthquake that causes 3 damage and have 50% of stunning the target for 1 turn"
+            ))
+            self.magic_list.append(PlayerMagic(
+                "Waterheal", 4, 5, {'cure':True},
+                "Heals 5 health points"
+            ))
+
+        #     self.defend = false
+
+
+        # def setup_turn(self):
+        #     self.defend = false
+
     
 
     class PlayerMagic:
@@ -58,6 +83,10 @@ init python:
             self.ATTACK = 0
             self.ACCURACY = 100
             self.AGILITY = 100
+
+
+        def setup_turn(self):
+            return
 
 
     player = None
@@ -113,7 +142,7 @@ label .game_loop:
 
     while(not battle_end):
 
-        "Select action"
+        call .player_action
 
         show mahoumike at hpunch_sprite
 
@@ -134,3 +163,41 @@ label .game_loop:
             if enemy.HP<=0:
                 battle_end = True
 
+
+label .player_action:
+
+    menu:
+        "Mahou!":
+            python:
+                menu_items=[]
+                for magic in player.magic_list:
+                    menu_items.append((magic.NAME, magic))
+                selected_magic = menu(menu_items)
+            call .use_magic(selected_magic)
+
+        "Hit with Staff": #Weak attack that recovers small amount of mana
+            call .staff_attack
+        
+        "Focus": #Recovers mana and take half damage for 1 turn
+            call .defend
+
+    return
+
+
+label .staff_attack:
+    # Hit with low damage
+    # Recover small amount of mana
+    return
+
+
+label .defend:
+    # Recover huge amount of mana
+    # Send defense
+    return
+
+
+label .use_magic(magic):
+    # Apply magic damage
+    # Apply effects
+    # Remove mana
+    return
