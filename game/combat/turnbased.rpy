@@ -1,41 +1,16 @@
 init python:
-
-    # class TurnBasedDisplayable(renpy.Displayable):
-
-    #     def __init__(self):
-
-    #         renpy.Displayable.__init__(self)
-
-
-    #     # Recomputes the position of the ball, handles bounces, and
-    #     # draws the screen.
-    #     def render(self, width, height, st, at):
-
-    #         # The Render object we'll be drawing into.
-    #         r = renpy.Render(width, height)
-
-    #         # Ask that we be re-rendered ASAP, so we can show the next
-    #         # frame.
-    #         renpy.redraw(self, 0)
-
-    #         # Return the Render object.
-    #         return r
-        
-
-    #     # Handles events.
-    #     def event(self, ev, x, y, st):
-
-    #         import pygame
     
     class Player:
 
         def __init__(self):
             self.ATTACK = 1
             self.DEFENSE = 0
-            self.HP = 10
+            self.MAXHP = 10
+            self.HP = self.MAXHP
             self.ACCURACY = 100
             self.AGILITY = 100
-            self.MAGIC = 10
+            self.MAXMAGIC = 10
+            self.MAGIC = self.MAXMAGIC
 
             self.magic_list = []
             self.magic_list.append(PlayerMagic(
@@ -47,7 +22,7 @@ init python:
                 "Casts 4 thunders that causes 2 damage and have 50% of hitting the target"
             ))
             self.magic_list.append(PlayerMagic(
-                "Earthquake", 4, 3, {'effect_accuracy':0.5},
+                "Earthquake", 4, 3, {'stun':True, 'effect_accuracy':0.5},
                 "Casts earthquake that causes 3 damage and have 50% of stunning the target for 1 turn"
             ))
             self.magic_list.append(PlayerMagic(
@@ -138,30 +113,27 @@ label play_turnbased:
 
 label .game_loop:
 
+    "A wild monster appears!"
+
     $ battle_end = False
 
+    call .player_action
+    
+    
     while(not battle_end):
 
         call .player_action
+    
+        if enemy.HP <= 0:
+            $ battle_end = True
 
-        show mahoumike at hpunch_sprite
+        if not battle_end:
+            "Monster stood still because its behavior wasn't implemented yet"
+        else:
+            "Monster was defeated"
 
-        python:
-            damage=player.ATTACK*3
-            enemy.HP-=damage
+    return
 
-        pause 1.0
-
-        show m_first at hpunch_sprite
-
-        pause 1.0
-
-        "Mike caused [damage] damage"
-        "Monster now has [enemy.HP] life left"
-
-        python:
-            if enemy.HP<=0:
-                battle_end = True
 
 
 label .player_action:
@@ -187,17 +159,40 @@ label .player_action:
 label .staff_attack:
     # Hit with low damage
     # Recover small amount of mana
+    "Not implemented yet"
     return
 
 
 label .defend:
     # Recover huge amount of mana
     # Send defense
+    "Not implemented yet"
     return
 
 
 label .use_magic(magic):
-    # Apply magic damage
-    # Apply effects
-    # Remove mana
+    python:
+        # Remove mana
+        player.MAGIC -= magic.COST
+
+        hits = 1
+        # Apply effects
+        # List of effects so far: 'hits', 'accuracy', 'stun', 'cure', 'effect_accuracy', 
+
+        # Apply magic damage
+        enemy.HP -= magic.DAMAGE
+
+
+    show mahoumike at hpunch_sprite
+
+    pause 1.0
+
+    show m_first at hpunch_sprite
+
+    pause 1.0
+
+    "Mike used [magic.NAME]."
+    "It caused [magic.DAMAGE] damage"
+    "Monster now has [enemy.HP] life left"
+    
     return
