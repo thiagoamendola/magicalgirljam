@@ -128,9 +128,9 @@ label .game_loop:
             $ battle_end = True
 
         if not battle_end:
-            "Monster stood still because its behavior wasn't implemented yet"
+            "Monster stood still because its behavior wasn't implemented yet."
         else:
-            "Monster was defeated"
+            "Monster was defeated!"
 
     return
 
@@ -174,25 +174,48 @@ label .use_magic(magic):
     python:
         # Remove mana
         player.MAGIC -= magic.COST
-
+        # Setup initial parameters
         hits = 1
+        accuracy = 1.0
         # Apply effects
         # List of effects so far: 'hits', 'accuracy', 'stun', 'cure', 'effect_accuracy', 
+        for effect in magic.EFFECT_LIST.keys():
+            if effect == 'hits':
+                hits = magic.EFFECT_LIST[effect]
+            elif effect == 'accuracy':
+                accuracy = magic.EFFECT_LIST[effect]
 
-        # Apply magic damage
-        enemy.HP -= magic.DAMAGE
-
-
-    show mahoumike at hpunch_sprite
-
-    pause 1.0
-
-    show m_first at hpunch_sprite
-
-    pause 1.0
+    $ hit_success = True
 
     "Mike used [magic.NAME]."
-    "It caused [magic.DAMAGE] damage"
-    "Monster now has [enemy.HP] life left"
+
+    $i = 0
+    while i < hits:
+        $i += 1
+
+        show mahoumike at hpunch_sprite
+
+        pause 1.0
+
+        python:
+            # Check hit and apply effects
+            if renpy.random.random() <= accuracy:
+                hit_success = True
+                # Apply magic damage
+                enemy.HP -= magic.DAMAGE
+                #<--Check effect_accuracy
+            else:
+                hit_success = False
+
+        if hit_success:
+
+            show m_first at hpunch_sprite
+            pause 1.0
+            "It caused [magic.DAMAGE] damage."
+        
+        else:
+            "[magic.NAME] missed."
+        
+    "Monster now has [enemy.HP] life left."
     
     return
