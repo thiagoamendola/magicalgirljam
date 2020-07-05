@@ -1,5 +1,9 @@
 init python:
     
+    STAFF_MAGIC_RECOVERY = 3
+    DEFEND_MAGIC_RECOVERY = 6
+    STUN_DURATION = 2 #
+
     class Player:
 
         def __init__(self):
@@ -11,6 +15,7 @@ init python:
             self.AGILITY = 100
             self.MAXMAGIC = 10
             self.MAGIC = self.MAXMAGIC
+            self.STAFFDAMAGE = 1
 
             self.magic_list = []
             self.magic_list.append(PlayerMagic(
@@ -22,7 +27,7 @@ init python:
                 "Casts 4 thunders that causes 2 damage and have 50% of hitting the target"
             ))
             self.magic_list.append(PlayerMagic(
-                "Earthquake", 4, 3, {'stun':True, 'effect_accuracy':0.5},
+                "Earthquake", 4, 2, {'stun':True, 'effect_accuracy':0.5},
                 "Casts earthquake that causes 3 damage and have 50% of stunning the target for 1 turn"
             ))
             self.magic_list.append(PlayerMagic(
@@ -51,23 +56,47 @@ init python:
     
     class Enemy:
 
-        def __init__(self):
+        def __init__(self, maxhp, name, description, main_attacks, special_attacks):
             self.MAXHP = 9
             self.HP = self.MAXHP
-            self.DEFENSE = 0
-            self.ATTACK = 0
+            self.NAME = name
+            self.DESCRIPTION = description
+            self.MAINATTACKS = main_attacks
+            self.SPECIALATTACKS = special_attacks
+            self.MOVE_COUNTER = 0
+
+
+    class EnemyAttacks:
+        
+        def __init__(self, name, damage, effect_list):
+            self.NAME = name
+            self.DAMAGE = damage
             self.ACCURACY = 100
-            self.AGILITY = 100
+            self.EFFECT_LIST = effect_list
 
 
-        def setup_turn(self):
-            return
+    enemy_dict = {
+        "first": Enemy(
+            9,
+            "Birdmon",
+            "An aggressive magical creature that likes to hunt alone",
+            [
+                EnemyAttacks(
+                    "Headbutt", 2, {},
+                )
+            ],
+            {
+                3: EnemyAttacks(
+                    "Diving Claw", 4, {},
+                )
+            }
+        )
+    }
 
 
     player = None
     enemy = None
 
-    # def game_setup():
 
 
 
@@ -84,25 +113,15 @@ label play_turnbased:
 
     window hide
 
-    #call screen turnbased
-
-#screen turnbased():
-
-    #add "bg turnbased field"
-
-    #default turnbased = TurnBasedDisplayable()
-
-    #add turnbased
-
-
     scene bg lecturehall
 
     show mahoumike stance at left
     show m_first neutral at topright
+
     python:
         # game_setup()
         player = Player()
-        enemy = Enemy()
+        enemy = enemy_dict[battle]
 
     call .game_loop
 
@@ -117,10 +136,9 @@ label .game_loop:
 
     $ battle_end = False
 
-    call .player_action
-    
-    
     while(not battle_end):
+
+        "You have [player.HP] HP and [player.MAGIC] magic points."
 
         call .player_action
     
@@ -128,7 +146,7 @@ label .game_loop:
             $ battle_end = True
 
         if not battle_end:
-            "Monster stood still because its behavior wasn't implemented yet."
+            call .monster_action
         else:
             "Monster was defeated!"
 
@@ -158,15 +176,20 @@ label .player_action:
 
 label .staff_attack:
     # Hit with low damage
+    python:
+        player.MAGIC = min(player.MAGIC+STAFF_MAGIC_RECOVERY, player.MAXMAGIC)
+        enemy.HP = max(enemy.HP-player.STAFFDAMAGE, 0)
     # Recover small amount of mana
-    "Not implemented yet"
+    "Mike attacks with the staff, recovering [STAFF_MAGIC_RECOVERY] magic and dealing [player.STAFFDAMAGE] damage."
     return
 
 
 label .defend:
     # Recover huge amount of mana
-    # Send defense
-    "Not implemented yet"
+    python:
+        player.MAGIC = min(player.MAGIC+DEFEND_MAGIC_RECOVERY, player.MAXMAGIC)
+    # Set defense
+    "Mike concentrates, recovering [DEFEND_MAGIC_RECOVERY] magic and defending this turn."
     return
 
 
@@ -177,6 +200,7 @@ label .use_magic(magic):
         # Setup initial parameters
         hits = 1
         accuracy = 1.0
+        cure = False
         # Apply effects
         # List of effects so far: 'hits', 'accuracy', 'stun', 'cure', 'effect_accuracy', 
         for effect in magic.EFFECT_LIST.keys():
@@ -184,6 +208,8 @@ label .use_magic(magic):
                 hits = magic.EFFECT_LIST[effect]
             elif effect == 'accuracy':
                 accuracy = magic.EFFECT_LIST[effect]
+            elif effect == 'cure':
+                cure = True
 
     $ hit_success = True
 
@@ -202,13 +228,12 @@ label .use_magic(magic):
             if renpy.random.random() <= accuracy:
                 hit_success = True
                 # Apply magic damage
-                enemy.HP -= magic.DAMAGE
+                enemy.HP = max(enemy.HP-magic.DAMAGE, 0)
                 #<--Check effect_accuracy
             else:
                 hit_success = False
 
         if hit_success:
-
             show m_first at hpunch_sprite
             pause 1.0
             "It caused [magic.DAMAGE] damage."
@@ -216,6 +241,25 @@ label .use_magic(magic):
         else:
             "[magic.NAME] missed."
         
-    "Monster now has [enemy.HP] life left."
+    "[enemy.NAME] now has [enemy.HP] life left."
     
+    return
+
+
+label .monster_action():
+    #"Monster stood still because its behavior wasn't implemented yet."
+    python:
+        move = ""
+
+        enemy.MOVE_COUNTER += 1
+        if enemy.MOVE_COUNTER >= enemy.SPECIALATTACKS.keys()[0]:
+            move = enemy.SPECIALATTACKS[0]
+            enemy.MOVE_COUNTER = 0
+        else:
+            move = enemy.MAINATTACKS[0]
+
+        player.HP = max(player.HP-move.DAMAGE, 0)
+    
+    "[enemy.NAME] used [move.NAME], causing [move.DAMAGE] damage."
+
     return
