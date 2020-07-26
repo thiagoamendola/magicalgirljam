@@ -6,8 +6,9 @@ label start:
 
     # jump intro
 
-    # $battle = "first"
-    jump play_turnbased
+    $ battle = "first"
+    # jump play_turnbased
+    jump sound_test
 
     return
  

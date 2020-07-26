@@ -71,7 +71,6 @@ init python:
         def __init__(self, name, damage, effect_list):
             self.NAME = name
             self.DAMAGE = damage
-            self.ACCURACY = 100
             self.EFFECT_LIST = effect_list
 
 
@@ -118,6 +117,8 @@ label play_turnbased:
     show mahoumike stance at left
     show m_first neutral at topright
 
+    show screen bars
+
     python:
         # game_setup()
         player = Player()
@@ -143,12 +144,13 @@ label .game_loop:
         call .player_action
     
         if enemy.HP <= 0:
-            $ battle_end = True
-
-        if not battle_end:
-            call .monster_action
-        else:
             "Monster was defeated!"
+            $ battle_end = True
+        elif enemy.HP <= 0:
+            "You died!"
+            $ battle_end = True
+        else:
+            call .monster_action
 
     return
 
@@ -201,6 +203,8 @@ label .use_magic(magic):
         hits = 1
         accuracy = 1.0
         cure = False
+        effect_accuracy = 1.0
+        status_effects = []
         # Apply effects
         # List of effects so far: 'hits', 'accuracy', 'stun', 'cure', 'effect_accuracy', 
         for effect in magic.EFFECT_LIST.keys():
@@ -210,6 +214,10 @@ label .use_magic(magic):
                 accuracy = magic.EFFECT_LIST[effect]
             elif effect == 'cure':
                 cure = True
+            elif effect == 'effect_accuracy':
+                effect_accuracy = magic.EFFECT_LIST[effect]
+            elif effect == 'stun':
+                status_effects.append('stun')
 
     $ hit_success = True
 
@@ -228,8 +236,17 @@ label .use_magic(magic):
             if renpy.random.random() <= accuracy:
                 hit_success = True
                 # Apply magic damage
-                enemy.HP = max(enemy.HP-magic.DAMAGE, 0)
-                #<--Check effect_accuracy
+                if not cure:
+                    enemy.HP = max(enemy.HP-magic.DAMAGE, 0)
+                else:
+                    player.HP = min(player.HP+magic.DAMAGE, player.MAXHP)
+                
+                # Check effect_accuracy
+                if renpy.random.random() <= effect_accuracy:
+                    for effect in magic.EFFECT_LIST.keys():
+                        if effect == 'stun':
+                            # IMPLEMENT STUN
+                            pass
             else:
                 hit_success = False
 
@@ -247,13 +264,15 @@ label .use_magic(magic):
 
 
 label .monster_action():
-    #"Monster stood still because its behavior wasn't implemented yet."
+
     python:
         move = ""
 
         enemy.MOVE_COUNTER += 1
+
+        # IMPROVE THE MOVE SELECTION
         if enemy.MOVE_COUNTER >= enemy.SPECIALATTACKS.keys()[0]:
-            move = enemy.SPECIALATTACKS[0]
+            move = enemy.SPECIALATTACKS[enemy.SPECIALATTACKS.keys()[0]]
             enemy.MOVE_COUNTER = 0
         else:
             move = enemy.MAINATTACKS[0]
