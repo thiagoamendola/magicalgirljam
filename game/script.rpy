@@ -8,7 +8,7 @@ label start:
 
     $ battle = "first"
     # jump play_turnbased
-    jump sound_test
+    jump sound_test2
 
     return
  

@@ -39,3 +39,11 @@ label sound_test:
     "Canal 1 = Música 3 (1.0); Canal 2 = Música 2 (0.0)"
 
     return
+
+label sound_test2:
+
+    call play_procedural("test")
+
+    "Procedural Music"
+
+    return
