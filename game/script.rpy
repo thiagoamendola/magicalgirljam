@@ -5,10 +5,12 @@
 label start:
 
     # jump intro
+    # jump test
+    jump first_encounter
 
-    $ battle = "first"
+    #$ battle = "first"
     # jump play_turnbased
-    jump sound_test2
+    #jump sound_test2
 
     return
  
