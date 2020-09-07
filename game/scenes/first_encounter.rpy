@@ -1,23 +1,60 @@
 
 define haikou = Character("Haikou", color="#ccc")
-define sister = Character("Haikou's Sister", color="#f00")
-define teacher = Character("Teacher", color="#00f")
-define student = Character("Student", color="#888")
+define sister = Character("Irmã de Haikou", color="#f00")
+define teacher = Character("Professor", color="#00f")
+define student = Character("Aluno", color="#888")
 define zero = Character("Zero", color="#0f0")
 define kyuren = Character("Kyuren", color="#ff0")
 define shimei = Character("Shimei", color="#0ff")
 define niven = Character("Niven", color="#f0f")
-define surai = Character("Surai", color="#cac")
+define surai = Character("Surai", color="#c7c")
 
 
 
 label first_encounter:
 
-    "Céu azul, sol brilhando lá fora. Quarto escuro, bagunçado. Som de despertador tocando." #Cenario
+    transform centerflip:
+        xzoom -1
+        xalign 0.5
+        yalign 1.0
+    
+    transform rightflip:
+        xzoom -1
+        xalign 0.8
+        yalign 1.0
+    
+    transform leftflip:
+        xzoom -1
+        xalign 0.2
+        yalign 1.0
+    
+    transform farrightflip:
+        xzoom -1
+        xalign 0.95
+        yalign 1.0
+
+    transform closerrightflip:
+        xzoom -1
+        xalign 0.65
+        yalign 1.0
+
+    transform farright:
+        xalign 0.95
+        yalign 1.0
+
+    transform closerright:
+        xalign 0.65
+        yalign 1.0
+
+    scene bg quarto with fade
+
+    "Céu azul, sol brilhando lá fora. Quarto escuro, bagunçado. Som de despertador tocando." # Cenario
     
     "Haikou encara o teto e esfrega os olhos."
     
     "Haikou suspira."
+
+    show haikou infeliz with dissolve
 
     haikou "Eu vou me atrasar se eu não levantar logo, ai ai..." # resmungando
 
@@ -27,9 +64,15 @@ label first_encounter:
 
     "Haikou volta para o quarto e coloca seu uniforme escolar."
 
+    scene bg cozinha with dissolve
+
     "Haikou desce às escadas, chegando na cozinha. Ele anda direto pra porta, pra sair da casa."
 
+    show haikou infeliz at centerflip with dissolve
+
     sister "Você não quer comer nada?"
+
+    show haikou irritado
 
     haikou "Não."
 
@@ -39,17 +82,27 @@ label first_encounter:
 
     sister "Mas..."
 
+    show haikou bravo
+
     haikou "{b}Estou atrasado, tenho que ir.{/b}" # Curto e grosso
 
     "Haikou abre a porta e sai da casa."
+
+    scene bg escola with dissolve
+    
+    show haikou irritado at centerflip with dissolve
 
     "rua, calçada, pouco trânsito, o céu ainda azul e brilhante. Som de pássaros cantando." # Cenario
 
     haikou "Que droga..." # resmungando
 
+    scene bg saladeaula with dissolve
+
     "portões da escola, corredor, sala de aula." #Cenario
 
     "sala de aula, com lousa, cadeiras, professor dando aula e alunos nas cadeiras." # Cenario
+
+    show haikou pensativo at centerflip with dissolve
 
     "Haikou joga no celular com uma mão embaixo de sua mesa e copia umas poucas frases no caderno com a outra mão. Ele faz isso a aula toda."
 
@@ -61,15 +114,28 @@ label first_encounter:
 
     "Haikou solta um suspiro inaudível."
 
+    show haikou infeliz at centerflip with dissolve
+
     "Haikou encara a lousa com olhos sonolentos e tediosos."
 
     "Algumas horas passam, finalmente é hora do almoço." # Sugestão: mostrar relógio da sala, mostrar alunos saindo da sala, para indicar passagem do tempo
 
-    "Dois colegas (Zero e Kyuren) vêm em direção a Haikou."
+    # "Dois colegas (Zero e Kyuren) vêm em direção a Haikou."
+
+    show haikou infeliz at leftflip with dissolve
+
+    show zero normal at closerright with dissolve
+    
+    show kyuren normal at farrightflip with dissolve
 
     zero "Haikou, vamos comer? O que você trouxe hoje?"
 
+    show haikou preocupado at leftflip
+
     haikou "Ah… Eu esqueci de preparar, acordei atrasado."
+
+    show kyuren infeliz at farrightflip
+    show zero pensativo at closerright
 
     kyuren "De novo?! Olha, você não pode sempre contar com amigos que te dêem o almoço!"
 
@@ -77,13 +143,24 @@ label first_encounter:
 
     kyuren "Eu vou te dar parte do meu almoço hoje, mas você realmente precisa resolver isso."
 
+    show zero surpreso at closerright
+
     zero "Eu posso dar também, mas é como ele disse… Você tem que dar um jeito."
+
+    show haikou pensativo at leftflip
 
     "Haikou suspira e balança a cabeça."
 
     "Os três saem da sala."
 
+    scene bg escola with dissolve
+
     "pátio da escola, com bancos, uma fonte e árvores." # Cenario
+
+    show haikou infeliz at leftflip
+    show zero normal at closerright
+    show kyuren normal at farrightflip
+    with dissolve
 
     "Zero e Kyuren abrem seus almoços."
 
@@ -95,19 +172,48 @@ label first_encounter:
 
     # Obs: essa pequena conversa acontece mais ou menos do lado dos meninos, mas eles não participam dela
 
+    hide haikou
+    hide zero
+    hide kyuren
+    with dissolve
+
+    show shimei normal at closerright with dissolve
+    
+    show niven normal at farrightflip with dissolve
+
     shimei "O céu hoje de madrugada tava diferente, eu juro!"
 
     niven "Mas isso não faz sentido, Shimei. Tem certeza que não tá precisando trocar seu óculos? "
 
     shimei "Eu sei o que eu vi! Eu vi as estrelas ficarem vermelhas! Eu tenho certeza!"
 
+    hide shimei
+    hide niven
+    with dissolve
+
+    show haikou pensativo at leftflip
+    show zero normal at closerright
+    show kyuren normal at farrightflip
+    with dissolve
+
     "Haikou revira os olhos."
 
+    show zero feliz at closerright
+    show haikou infeliz at leftflip
+
     zero "Vocês estão sabendo da festa na casa da Irisha? É hoje à noite."
+    
+    show zero sorrindo at closerright
+    show kyuren sorrindo at farrightflip
 
     kyuren "Sim, eu vou!"
 
+    show haikou surpreso at leftflip 
+    show kyuren normal at farrightflip
+    
     haikou "Que horas vai ser?"
+
+    show zero normal at closerright 
 
     zero "Começa às oito."
 
@@ -115,23 +221,50 @@ label first_encounter:
 
     zero "Não sei... Essas festas costumam ir até de madrugada."
 
+    show haikou maldoso at leftflip 
+
     haikou "Haja saco para ficar tanto tempo assim... O que as pessoas têm na cabeça?"
 
+    show haikou infeliz at leftflip
+    show zero triste at closerright
+    
     zero "Você devia sair um pouco mais, Haikou. Você ia perceber que pode ser bem divertido."
-
+    
+    show haikou pensativo at leftflip
+    show zero corado at closerright
+    
     zero "Especialmente com as meninas… As amigas da Irisha são bem bonitas…" # expressão meio maliciosa
 
+    show kyuren infeliz at farrightflip
+    show haikou preocupado at leftflip
+    show zero triste at closerright
+    
     haikou "Não vejo graça nisso. Nenhuma delas falaria comigo, e eu não teria saco de falar com elas mesmo…"
+
+    show haikou infeliz at leftflip
+    show zero surpreso at closerright
 
     zero "O que tem de errado com você hoje?!" # irritado
 
     # kyuren, erguendo a mão e apontando com o indicador
 
+    show kyuren bravo at farrightflip
+    show zero triste at closerright
+
     kyuren "A pergunta certa não é \"o que tem de errado com o Haikou hoje\", Zero."
     kyuren "A pergunta certa é \"o que tem de errado com o Haikou\"."
+    
+    show haikou irritado at leftflip
+    
     kyuren "Ele sempre foi assim. Um saco de pessoa."
 
+    show haikou maldoso at leftflip
+
     haikou "E com quem você acha que eu aprendi?!" # irritado
+
+    show haikou feliz at leftflip
+    show zero sorrindo at closerright
+    show kyuren sorrindo at farrightflip
 
     "Os três riem."
 
@@ -141,7 +274,7 @@ label first_encounter:
 
     haikou "Ah, eu vou no banheiro. Podem ir na frente."
 
-    zero "Beleza"
+    zero "Beleza."
     kyuren "Beleza."
 
     "Zero e Kyuren andam até a sala."
