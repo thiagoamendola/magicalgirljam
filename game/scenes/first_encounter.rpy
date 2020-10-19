@@ -1,10 +1,10 @@
 
 define haikou = Character("Haikou", color="#ccc")
 define sister = Character("Irmã de Haikou", color="#f00")
-define teacher = Character("Professor", color="#00f")
-define student = Character("Aluno", color="#888")
-define zero = Character("Zero", color="#0f0")
-define kyuren = Character("Kyuren", color="#ff0")
+define teacher = Character("Professor", color="#868")
+define student = Character("Aluno", color="#886")
+define zero = Character("Zero", color="#00f")
+define kyuren = Character("Kyuren", color="#f66")
 define shimei = Character("Shimei", color="#0ff")
 define niven = Character("Niven", color="#f0f")
 define surai = Character("Surai", color="#c7c")
@@ -46,6 +46,24 @@ label first_encounter:
         xalign 0.65
         yalign 1.0
 
+    transform right:
+        xalign 0.8
+        yalign 1.0
+
+    transform left:
+        xalign 0.2
+        yalign 1.0
+
+    transform outsideright:
+        xalign 1.25
+        yalign 1.0
+
+    define slowdissolve = Dissolve(0.5)
+
+    # Start
+
+    call play_procedural("music1")
+
     scene bg quarto with fade
 
     "Céu azul, sol brilhando lá fora. Quarto escuro, bagunçado. Som de despertador tocando." # Cenario
@@ -54,7 +72,7 @@ label first_encounter:
     
     "Haikou suspira."
 
-    show haikou infeliz with dissolve
+    show haikou serio with dissolve
 
     haikou "Eu vou me atrasar se eu não levantar logo, ai ai..." # resmungando
 
@@ -68,7 +86,7 @@ label first_encounter:
 
     "Haikou desce às escadas, chegando na cozinha. Ele anda direto pra porta, pra sair da casa."
 
-    show haikou infeliz at centerflip with dissolve
+    show haikou serio at centerflip with dissolve
 
     sister "Você não quer comer nada?"
 
@@ -114,7 +132,7 @@ label first_encounter:
 
     "Haikou solta um suspiro inaudível."
 
-    show haikou infeliz at centerflip with dissolve
+    show haikou serio at centerflip with dissolve
 
     "Haikou encara a lousa com olhos sonolentos e tediosos."
 
@@ -122,19 +140,20 @@ label first_encounter:
 
     # "Dois colegas (Zero e Kyuren) vêm em direção a Haikou."
 
-    show haikou infeliz at leftflip with dissolve
+    show haikou serio at leftflip with dissolve
 
-    show zero normal at closerright with dissolve
+    show zero feliz at closerright with dissolve
     
     show kyuren normal at farrightflip with dissolve
 
     zero "Haikou, vamos comer? O que você trouxe hoje?"
 
+    show zero normal at closerright
     show haikou preocupado at leftflip
 
     haikou "Ah… Eu esqueci de preparar, acordei atrasado."
 
-    show kyuren infeliz at farrightflip
+    show kyuren serio at farrightflip
     show zero pensativo at closerright
 
     kyuren "De novo?! Olha, você não pode sempre contar com amigos que te dêem o almoço!"
@@ -157,7 +176,7 @@ label first_encounter:
 
     "pátio da escola, com bancos, uma fonte e árvores." # Cenario
 
-    show haikou infeliz at leftflip
+    show haikou serio at leftflip
     show zero normal at closerright
     show kyuren normal at farrightflip
     with dissolve
@@ -199,7 +218,7 @@ label first_encounter:
     "Haikou revira os olhos."
 
     show zero feliz at closerright
-    show haikou infeliz at leftflip
+    show haikou serio at leftflip
 
     zero "Vocês estão sabendo da festa na casa da Irisha? É hoje à noite."
     
@@ -225,7 +244,7 @@ label first_encounter:
 
     haikou "Haja saco para ficar tanto tempo assim... O que as pessoas têm na cabeça?"
 
-    show haikou infeliz at leftflip
+    show haikou serio at leftflip
     show zero triste at closerright
     
     zero "Você devia sair um pouco mais, Haikou. Você ia perceber que pode ser bem divertido."
@@ -235,13 +254,13 @@ label first_encounter:
     
     zero "Especialmente com as meninas… As amigas da Irisha são bem bonitas…" # expressão meio maliciosa
 
-    show kyuren infeliz at farrightflip
+    show kyuren serio at farrightflip
     show haikou preocupado at leftflip
     show zero triste at closerright
     
     haikou "Não vejo graça nisso. Nenhuma delas falaria comigo, e eu não teria saco de falar com elas mesmo…"
 
-    show haikou infeliz at leftflip
+    show haikou serio at leftflip
     show zero surpreso at closerright
 
     zero "O que tem de errado com você hoje?!" # irritado
@@ -272,6 +291,8 @@ label first_encounter:
 
     "corredor." # Cenario
 
+    scene bg preto with dissolve
+
     haikou "Ah, eu vou no banheiro. Podem ir na frente."
 
     zero "Beleza."
@@ -279,44 +300,92 @@ label first_encounter:
 
     "Zero e Kyuren andam até a sala."
 
+    scene bg banheiro with dissolve
+
+    show haikou normal with dissolve
+
     "Haikou vai até o banheiro. Entra numa das divisões, depois sai e vai para a pia lavar as mãos. Passa um pouco de água no rosto."
 
-    "Mostrar espelho com ele e uma garota ao lado."
+    show surai seria at farright with slowdissolve
+
+    # "Mostrar espelho com ele e uma garota ao lado."    
+
+    # call play_procedural("musictest2") from _call_play_procedural_2
+    play music "audio/musics/Cupido-Tema.ogg" loop
+
+    show haikou boquiaberto
 
     "Haikou arregala os olhos."
 
     "Haikou vira a cabeça pro lado."
 
+    show haikou bravo at leftflip
+    with move
+
     haikou "Estranho, não ouvi passos." # pensamento
 
     haikou "O que você tá fazendo aqui?" # áspero
 
+    show surai normal at right
+    with move 
+
     surai "Procurando meninos, é claro!" # animada
 
+    show haikou preocupado at leftflip
+
     haikou "Eu não faço ideia do que você quer dizer com isso, mas enfim…"
+
+    show haikou irritado at leftflip
+
     haikou "Meninas não devem entrar aqui, está indicado claramente na porta que esse banheiro é para os \"meninos\", você não viu?"
+
+    show surai evasiva at right
 
     surai "E por que você acha que um mero símbolo na porta significaria algo para mim?" # sorrindo
 
+    show haikou bravo at leftflip
+    show surai seria at right
+
     haikou "Você tem algum problema? É mais do que óbvio que os banheiros são separados. Em que mundo você vive?!" # confuso e bravo
 
+    show haikou irritado at leftflip
+    show surai evasiva at right
+
     surai "Alguém como eu certamente tem uma gama de problemas para lidar."
+    
+    show surai seria at right
 
     haikou "Se algum professor ver, você vai levar bronca. Eu avisei…"
 
+    show haikou irritado at farrightflip
+    show surai seria at closerright
+    with move
+
     "Haikou anda em direção à porta."
 
+    show surai maldosa at closerright
+
     surai "Quanta consideração… Tentar me poupar de broncas dos mortais." # rindo
+
+    show haikou preocupado at farrightflip
+    show surai normal at closerright
 
     "Haikou revira os olhos e continua andando."
 
     "Ao tentar sair do banheiro, bate numa parede invisível."
 
+    show haikou boquiaberto at farrightflip
+
     haikou "Ai!"
+
+    show surai maldosa at closerright
 
     surai "Não vá se machucar..." # rindo
 
     "Haikou toca no ar com cuidado, sentindo como se houvesse um vidro bem fino, mas bem resistente, ali."
+
+    show surai maldosa at centerflip
+    with move
 
     "Uma bola de fogo aparece ao lado da mão dele."
 
@@ -324,9 +393,15 @@ label first_encounter:
 
     "A bola de fogo some."
 
+    show haikou boquiaberto at farrightflip:
+
     "Haikou vira de volta para Surai, surpreso."
 
+    show surai feliz at center
+
     surai "Ora, não precisa ficar tão chocado assim! Eu sou capaz de fazer coisas muito mais grandiosas do que bolas de fogo, você quer ver?"
+
+    show surai evasiva at centerflip
 
     surai "Bom, você não me deixa escolha… Vou ter que fazer o contrato com você mesmo!" # bufando
 
@@ -334,21 +409,38 @@ label first_encounter:
 
     surai "Sim! É isso que eu faço. Eu escolho jovens para conceder-lhes poderes e acompanhá-los em uma jornada de luta contra o mal."
 
+    show surai normal at centerflip
+    show haikou preocupado at farrightflip:
+
     haikou "Isso parece coisa de videogame… Talvez minha família esteja certa, afinal." # sarcástico
     haikou "Jogar demais talvez seja ruim. Eu não fazia ideia de que jogar tanto poderia me dar alucinações desse nível…"
+
+    show surai brava at centerflip
 
     surai "Ei, ei, você tá me escutando?!"
 
     surai "Você precisa aceitar o contrato."
 
+    show haikou boquiaberto at farrightflip:
+
     haikou "Que contrato?"
 
     surai "Eu acabei de falar! Você ganha poderes e, em troca, precisa lutar contra o mal."
+
+    show surai evasiva at centerflip
+
     surai "Derrotar monstros, investigar… Vocês humanos são cheios de histórias e fantasias a respeito disso, isso devia ser familiar pra você, não?!"
+
+    show surai normal at centerflip
+    show haikou bravo at farrightflip:
 
     haikou "Eu não sou obrigado a aceitar, eu não quero me envolver com isso, agora pode por favor tirar a parede invisível pra eu voltar pra aula?"
 
+    show surai maldosa at centerflip
+
     surai "E se eu disser que não? E se eu chamuscar seu cabelo?" # ameaçando
+
+    show haikou boquiaberto at farrightflip:
 
     "Surai conjura uma chama no dedo indicador e avança o dedo na direção do cabelo dele."
 
@@ -356,39 +448,83 @@ label first_encounter:
 
     surai "Então aceita o contrato!" # brava
 
+    show haikou bravo at farrightflip:
+
     haikou "Não! Eu nem te conheço! Eu ainda nem me convenci de que você é real!" # bravo
 
+    show surai pensativa at centerflip
+
     surai "Ok, eu vou parar com as ameaças e brincadeiras… A verdade é que eu realmente preciso de você." # suspirando triste
-    surai "Vocês não vêem isso, porque nós mantemos isso oculto de vocês para a sua própria segurança, mas esse mundo está desmoronando." 
+
+    show surai evasiva at centerflip
+
+    surai "Vocês não vêem isso, porque nós mantemos isso oculto de vocês para a sua própria segurança, mas esse mundo está desmoronando."
+
+    show surai triste at centerflip
+
     surai "Damos nosso máximo para lidar com esses problemas sozinhos e não envolver pessoas não-mágicas nisso, mas precisamos de reforços…"
+
+    show surai chorando at centerflip
 
     surai "É por isso que eu estou aqui: eu preciso escolher alguém para substituir companheiros que se foram, porque não temos mais pessoas o suficiente para proteger esse mundo." # com lágrimas nos olhos
 
+    show haikou pensativo at farrightflip:
+
     haikou "Eu sinto muito, mas eu preciso ir pra aula. E eu nem sequer seria qualificado para algo desse tipo." # mais calmo e tentando ser mais delicado
     haikou "Você eventualmente vai encontrar alguém melhor pra essa, uh… Tarefa? É, tarefa parece bom."
+
+    show haikou preocupado at farrightflip:
+
     haikou "Então não desista! Mas agora, por favor, pode me deixar ir para a aula?"
 
     "Surai enxuga as lágrimas." 
 
+    show surai seria at centerflip
+
     surai "Infelizmente não posso. Você já viu minha magia, e humanos que presenciam isso podem ficar loucos." # novamente enérgica e travessa, sorrindo
+
+    show surai feliz at centerflip
+
     surai "Eles ficam, a não ser que se envolvam o suficiente na situação para aceitar a nova realidade e tomá-la como parte de si mesmos."
+
+    show surai evasiva at centerflip
+
     surai "Além disso… Corro o risco de você sair espalhando por aí. Ninguém acreditaria, mas até mesmo boatos podem ser perigosos."
+
+    show surai seria at centerflip
+
     surai "E, agora que você viu meus poderes, pode se tornar alvo de monstros. A opção mais segura aqui é aceitar o contrato…"
 
+    show haikou bravo at farrightflip:
+
     haikou "Mais segura para você, né?!"
+
+    show surai brava at centerflip
 
     surai "Mais segura para você! Eu estou falando sério! Monstros podem estar nos observando nesse instante!"
     surai "E mesmo que você recuse o contrato, eles não vão levar isso em conta!"
 
+    show haikou preocupado at farrightflip:
+    show surai seria at centerflip
+
     "Haikou respira fundo."
+
+    show haikou irritado at farrightflip:
 
     haikou "Eu realmente acho melhor eu não me envolver nisso. Eu posso ir agora? Por favor?"
 
+    show surai triste at centerflip
+
     surai "Tudo bem. Obrigada pelo seu tempo!" # triste
+
+    hide surai with dissolve
 
     "Surai desaparece."
 
     "A parede invisível desaparece."
+
+    show haikou irritado at outsideright
+    with move
 
     "Haikou anda para fora do banheiro e volta para a sala de aula."
 
